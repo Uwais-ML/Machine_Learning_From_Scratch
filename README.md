@@ -8,7 +8,7 @@ This repository provides clear implementations of fundamental machine learning a
 
 ## ✨ Features
 
-- **NumPy-based Implementations**: Algorithms built from scratch using NumPy for efficient numerical computations
+- Pure Implementations**: Algorithms built from scratch using Only Python to stay library free.
 - **Supervised Learning**: Linear Regression, Logistic Regression, and classification algorithms
 - **Deep Learning**: Neural networks and backpropagation implementations
 - **Automatic Differentiation**: Micrograd - a tiny autodiff engine for computing gradients
@@ -331,7 +331,7 @@ python deep_learning/Micrograd.py
 
 - **Issues**: Open an issue on GitHub for bugs or questions
 - **Pull Requests**: Contributions welcome!
-- **Email**: your-email@example.com
+- **Email**: choudharyowais473@gmail.com
 - **Discussions**: Use GitHub Discussions for general questions
 
 ---
