@@ -2,7 +2,7 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
 [![Dependencies](https://img.shields.io/badge/Dependencies-Zero%20(Pure%20Stdlib)-success.svg)](#design-philosophy)
-[![Autograd](https://img.shields.io/badge/Engine-Scalar%20Autograd%20DAG-orange.svg)](#1-architecture_ml--computational-foundations)
+[![Autograd](https://img.shields.io/badge/Engine-Scalar%20Autograd%20DAG-orange.svg)](#1-architecture_ml--computational-foundations--autograd)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 A comprehensive, zero-dependency educational repository implementing core Machine Learning and Deep Learning algorithms from mathematical first principles. Every component—from scalar reverse-mode automatic differentiation (autograd DAG) and multi-layer perceptrons to gradient descent optimizers, evaluation metrics, and numerically stable loss functions—is built purely in vanilla Python standard library (`math`, `random`).
@@ -14,16 +14,17 @@ A comprehensive, zero-dependency educational repository implementing core Machin
 - [Design Philosophy](#design-philosophy)
 - [Repository Architecture](#repository-architecture)
 - [Directory & Component Breakdown](#directory--component-breakdown)
-  - [1. `Architecture_ML/` — Computational Foundations & Autograd](#1-architecture_ml--computational-foundations--autograd)
-  - [2. `Deeplearning/` — Neural Network Architectures](#2-deeplearning--neural-network-architectures)
-  - [3. `Supervised/` — Classical Supervised Learning](#3-supervised--classical-supervised-learning)
-  - [4. `Methods/` — Optimization, Scaling & Regularization](#4-methods--optimization-scaling--regularization)
-  - [5. `Eval/` — Diagnostics & Evaluation Metrics](#5-eval--diagnostics--evaluation-metrics)
-  - [6. `loss/` — Loss Objectives & Numerical Stability](#6-loss--loss-objectives--numerical-stability)
-  - [7. `Training_Example/` — Executable Training Pipelines](#7-training_example--executable-training-pipelines)
+  - [1. Architecture_ML — Computational Foundations & Autograd](#1-architecture_ml--computational-foundations--autograd)
+  - [2. Deeplearning — Neural Network Architectures](#2-deeplearning--neural-network-architectures)
+  - [3. Supervised — Classical Supervised Learning](#3-supervised--classical-supervised-learning)
+  - [4. Methods — Optimization, Scaling & Regularization](#4-methods--optimization-scaling--regularization)
+  - [5. Eval — Diagnostics & Evaluation Metrics](#5-eval--diagnostics--evaluation-metrics)
+  - [6. loss — Loss Objectives & Numerical Stability](#6-loss--loss-objectives--numerical-stability)
+  - [7. Training_Example — Executable Training Pipelines](#7-training_example--executable-training-pipelines)
 - [Execution & Quickstart Guide](#execution--quickstart-guide)
 - [System Architecture & Dataflow](#system-architecture--dataflow)
 - [Roadmap & Planned Extensions](#roadmap--planned-extensions)
+- [License](#license)
 
 ---
 
@@ -45,10 +46,10 @@ This repository demystifies those abstractions:
 Machine_Learning_From_Scratch/
 ├── Architecture_ML/            # Core computational graph & autograd engine
 │   ├── Micrograd.py            # Scalar-valued DAG automatic differentiation engine
-│   └── CNN_kernel.py           # Work-in-progress custom 2D tensor convolution kernel
+│   └── CNN_kernel.py           # Custom 2D tensor convolution kernel
 ├── Deeplearning/               # Neural network building blocks
 │   ├── Neural_Network.py       # Object-oriented Neuron, Layer, and MLP modules
-│   └── Cnn.py                  # Work-in-progress high-level Convolutional Neural Network
+│   └── Cnn.py                  # High-level Convolutional Neural Network
 ├── Supervised/                 # Classical parametric machine learning models
 │   ├── Linear_regression.py    # Univariate linear regression with batch gradient descent
 │   └── logistics_regression.py # Binary logistic regression with sigmoid activation
@@ -71,7 +72,7 @@ Machine_Learning_From_Scratch/
 
 ## Directory & Component Breakdown
 
-### 1. `Architecture_ML/` — Computational Foundations & Autograd
+### 1. Architecture_ML — Computational Foundations & Autograd
 
 This folder houses the computational backbone of the deep learning pipeline.
 
@@ -82,10 +83,10 @@ Implements a DAG-based scalar value wrapper (`Micrograd`) that tracks operations
 - **Supported Operator Overloads**:
   - Addition (`__add__`, `__radd__`): $\frac{\partial (x + y)}{\partial x} = 1 \cdot \frac{\partial L}{\partial \text{out}}$
   - Multiplication (`__mul__`, `__rmul__`): $\frac{\partial (x \cdot y)}{\partial x} = y \cdot \frac{\partial L}{\partial \text{out}}$
-  - Negation & Subtraction (`__neg__`, `__sub__`, `__rsub__`): Implemented as $x + (-y)$.
+  - Negation & Subtraction (`__neg__`, `__sub__`, `__rsub__`): Implemented as $x + (-y)$
   - Power Rule (`__pow__`): $\frac{\partial (x^n)}{\partial x} = n \cdot x^{n-1} \cdot \frac{\partial L}{\partial \text{out}}$
-  - Non-linear Activation (`tanh`): $\tanh(x) = \frac{e^{2x} - 1}{e^{2x} + 1}$, with derivative $\frac{d}{dx}\tanh(x) = 1 - \tanh^2(x)$.
-- **Reverse Topological Sort (`backward`)**: Performs Depth-First Search (DFS) traversal to construct a topologically ordered list of computation nodes, setting root gradient $\frac{\partial L}{\partial L} = 1.0$ and propagating gradients backwards:
+  - Non-linear Activation (`tanh`): $\tanh(x) = \frac{e^{2x} - 1}{e^{2x} + 1}$, with derivative $\frac{d}{dx}\tanh(x) = 1 - \tanh^2(x)$
+- **Reverse Topological Sort (`backward`)**: Performs Depth-First Search (DFS) traversal to construct a topologically ordered list of computation nodes, setting root gradient $\frac{\partial L}{\partial L} = 1.0$ and propagating gradients backwards.
 
 ```python
 from Architecture_ML.Micrograd import Micrograd
@@ -116,7 +117,7 @@ Foundational development file for implementing 2D sliding-window tensor convolut
 
 ---
 
-### 2. `Deeplearning/` — Neural Network Architectures
+### 2. Deeplearning — Neural Network Architectures
 
 High-level modular abstractions built directly on top of the scalar autograd engine.
 
@@ -154,7 +155,7 @@ High-level Convolutional Neural Network module extending feature extraction laye
 
 ---
 
-### 3. `Supervised/` — Classical Supervised Learning
+### 3. Supervised — Classical Supervised Learning
 
 Parametric statistical learning algorithms with analytical gradient derivations.
 
@@ -162,9 +163,13 @@ Parametric statistical learning algorithms with analytical gradient derivations.
 Fits an optimal line $\hat{y} = mx + b$ by minimizing Mean Squared Error (MSE) using Batch Gradient Descent.
 
 - **Objective Function**:
+
   $$J(m, b) = \frac{1}{N}\sum_{i=1}^N (y_i - (m x_i + b))^2$$
+
 - **Analytical Gradient Derivations**:
+
   $$\frac{\partial J}{\partial m} = -\frac{2}{N}\sum_{i=1}^N x_i (y_i - \hat{y}_i), \quad \frac{\partial J}{\partial b} = -\frac{2}{N}\sum_{i=1}^N (y_i - \hat{y}_i)$$
+
 - **Features**:
   - Integrated Min-Max Normalization.
   - Automatic model checkpointing (`save_checkpoint`).
@@ -175,15 +180,20 @@ Fits an optimal line $\hat{y} = mx + b$ by minimizing Mean Squared Error (MSE) u
 Performs binary classification using the sigmoid link function and cross-entropy loss gradients.
 
 - **Hypothesis Function**:
+
   $$p = \sigma(z) = \frac{1}{1 + e^{-z}}, \quad z = m x + b$$
+
 - **Cross-Entropy Analytical Gradients**:
+
   $$\frac{\partial L}{\partial m} = \frac{1}{N}\sum_{i=1}^N (p_i - y_i) x_i, \quad \frac{\partial L}{\partial b} = \frac{1}{N}\sum_{i=1}^N (p_i - y_i)$$
+
 - **Decision Rule**:
+
   $$\hat{y} = \begin{cases} 1 & \text{if } p \ge \tau \\ 0 & \text{if } p < \tau \end{cases} \quad (\text{default threshold } \tau = 0.5)$$
 
 ---
 
-### 4. `Methods/` — Optimization, Scaling & Regularization
+### 4. Methods — Optimization, Scaling & Regularization
 
 Utility and optimization modules for model training and stability.
 
@@ -201,7 +211,7 @@ Roadmap for deep learning regularizations: Batch Normalization, Dropout masks, a
 
 ---
 
-### 5. `Eval/` — Diagnostics & Evaluation Metrics
+### 5. Eval — Diagnostics & Evaluation Metrics
 
 Pure Python model evaluation and diagnostic metrics.
 
@@ -225,7 +235,7 @@ Evaluates continuous regression predictions:
 
 ---
 
-### 6. `loss/` — Loss Objectives & Numerical Stability
+### 6. loss — Loss Objectives & Numerical Stability
 
 Specialized loss functions designed for gradient computation and objective evaluation.
 
@@ -248,7 +258,7 @@ Specialized loss functions designed for gradient computation and objective evalu
 
 ---
 
-### 7. `Training_Example/` — Executable Training Pipelines
+### 7. Training_Example — Executable Training Pipelines
 
 Runnable scripts demonstrating how all modules connect into end-to-end training loops.
 
@@ -274,8 +284,8 @@ Demonstrates binary logistic classification on a 1D synthetic dataset:
 ```python
 from Supervised.logistics_regression import Logistics_regression
 
-X = [30, 32, 35, 37, 38, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50, ...]
-y = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]
+X = [30, 32, 35, 37, 38, 40, 41, 42, 44, 45, 46, 47, 48, 49, 50]
+y = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 classifier = Logistics_regression(X, y)
 classifier.fit(epoch=1000, lr=0.01)
@@ -358,11 +368,11 @@ PYTHONPATH=. python3 Training_Example/Example_logistics.py
 
 ```mermaid
 flowchart LR
-    subgraph Forward Pass
-        x1["x1: Micrograd"] --> mul1["*"]
-        w1["w1: Micrograd"] --> mul1
-        x2["x2: Micrograd"] --> mul2["*"]
-        w2["w2: Micrograd"] --> mul2
+    subgraph Forward["Forward Pass"]
+        x1["x1 (Micrograd)"] --> mul1["*"]
+        w1["w1 (Micrograd)"] --> mul1
+        x2["x2 (Micrograd)"] --> mul2["*"]
+        w2["w2 (Micrograd)"] --> mul2
         mul1 --> add1["+"]
         mul2 --> add1
         add1 --> add2["+ (bias b)"]
@@ -370,10 +380,11 @@ flowchart LR
         tanh --> loss["Loss L"]
     end
 
-    subgraph Backward Pass (Reverse Topological Order)
-        loss -. "d(L)/d(L) = 1.0" .-> tanh
-        tanh -. "d(L)/d(add2) = (1 - tanh²)*d(out)" .-> add2
-        add2 -. "d(L)/d(w1), d(L)/d(w2)" .-> w1 & w2
+    subgraph Backward["Backward Pass"]
+        loss -.->|"dL/dL = 1.0"| tanh
+        tanh -.->|"dL/d(add2)"| add2
+        add2 -.->|"dL/dw1"| w1
+        add2 -.->|"dL/dw2"| w2
     end
 ```
 
@@ -387,7 +398,7 @@ flowchart TD
     L3 --> Pred["Prediction y_pred"]
     Pred --> LossFn["MSE Loss Graph"]
     LossFn --> Backprop["loss.backward()"]
-    Backprop --> Optimizer["Update: p.data -= lr * p.grad"]
+    Backprop --> Optimizer["Optimizer Step: p.data -= lr * p.grad"]
 ```
 
 ---
